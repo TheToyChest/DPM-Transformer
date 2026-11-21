@@ -27,10 +27,10 @@ We have provided a standalone **Google Colab notebook** (`DPM_Wikitext_ZeroShot_
 | Model Config | Seed | Batch Size | OWT Val Loss | OWT Next-Token Acc | Wiki-103 Perplexity | Wiki-103 Zero-Shot Acc | HellaSwag |
 | :---         | :---: | :---:     | :---:         | :---:             | :---:               | :---:                   | :---: |
 | **Softmax Baseline** | 105 | 16 | 4.04       | 30.88%             | 179.38               | 23.47%                 | 25.52% |
-| **DPM (ReLU)** | 42 | 32         | 3.17         | 40.01%             | 81.28               | 28.30%                 | 25.12% |
-| **DPM (ReLU)** | 105 | 16         | 2.81         | 43.76%             | 59.81               | 33.66%                 | 25.19% |
-| **DPM (ReLU)** | 42 | 16         | 2.71         | 44.81%             | 44.67               | 34.17%                 | 25.67% |
-| **DPM (ReLU)** | 999 | 16     | 2.69      | 44.26%       | 44.05             | 33.15%           | 25.85% |
+| **DPM** | 42 | 32         | 3.17         | 40.01%             | 81.28               | 28.30%                 | 25.12% |
+| **DPM** | 105 | 16         | 2.81         | 43.76%             | 59.81               | 33.66%                 | 25.19% |
+| **DPM** | 42 | 16         | 2.71         | 44.81%             | 44.67               | 34.17%                 | 25.67% |
+| **DPM** | 999 | 16     | 2.69      | 44.26%       | 44.05             | 33.15%           | 25.85% |
 
 ## 🏗️ Architecture Specifications
 
