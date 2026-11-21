@@ -22,7 +22,7 @@ We have provided a standalone **Google Colab notebook** (`DPM_Wikitext_ZeroShot_
 **Model Weights:** Hosted on Hugging Face at [TheToyChest/DPM-15L](https://huggingface.co/TheToyChest/DPM-15L).
 
 ## 📊 Empirical Proof: The Pareto Frontier
-**A Note on Validation Loss:** DPM utilizes ReLU, a rectifying function, and zeros out some signals. This alters the calculation for NLL Validation Loss compared to Softmax, which does not zero out any signals.  Because DPM and standard Softmax operate on different mathematical loss frameworks (a zero-floored polynomial  vs. a dense exponential ), their raw NLL Validation Loss values cannot be directly mapped 1:1 against each other without further context. To provide an objective comparison, **Next-Token Accuracy** and **Wikitext-103 Zero-Shot Generalization** results are used as objective benchmarks to compare model performance.
+To provide an objective comparison, **Next-Token Accuracy** and **Wikitext-103 Zero-Shot Generalization** results are used as objective benchmarks to compare model performance.
 
 | Model Config | Seed | Batch Size | OWT Val Loss | OWT Next-Token Acc | Wiki-103 Perplexity | Wiki-103 Zero-Shot Acc | HellaSwag |
 | :---         | :---: | :---:     | :---:         | :---:             | :---:               | :---:                   | :---: |
@@ -39,7 +39,7 @@ We have provided a standalone **Google Colab notebook** (`DPM_Wikitext_ZeroShot_
 * **Context Window:** 512 Tokens
 * **Positional Embeddings:** RoPE (Rotary Position Embedding)
 * **Normalization:** RMSNorm (Post-Norm Configuration + Q/K Normalization)
-* **Attention Activation:** Pure ReLU and learned polynomial expansion (DPM)
+* **Attention Activation:** ReLU and learned polynomial expansion (DPM)
 * **Parameter Count:** 25 Million
 * **Training Data:** 1 Epoch on OpenWebText
 
