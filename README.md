@@ -1,4 +1,4 @@
-# 🧸 DPM-15L: Look Mom, No Softmax!
+# 🧸 DPM-Transformer: Look Mom, No Softmax!
 [![Model Weights](https://img.shields.io/badge/HuggingFace-Weights-orange)](https://huggingface.co/TheToyChest/DPM-15L) 
 [![Colab](https://img.shields.io/badge/Colab-Zero--Shot_Eval-blue)](DPM_Wikitext_ZeroShot_Eval.ipynb)
 
