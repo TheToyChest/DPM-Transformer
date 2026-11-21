@@ -4,7 +4,7 @@
 
 **A 25M parameter causal language model utilizing Decoupled Polynomial Mapping (DPM) and true mathematical sparsity.** 
 
-This repository contains the model architecture, training configurations, and zero-shot evaluation scripts for a 15-layer DPM language model transformer. This architecture removes standard exponential Softmax in both self-attention and loss computation, replacing it with DPM: a zero-floored ReLU activation paired with a learned multi-term polynomial expansion.
+This repository contains the model architecture, training configurations, and zero-shot evaluation scripts for a 15-layer DPM language model transformer. This architecture removes standard exponential Softmax in both self-attention and loss computation, replacing it with DPM: a ReLU activation paired with a learned multi-term polynomial expansion.
 
 > **Abstract:** Decoupled Polynomial Mapping (DPM) architecture replaces standard exponential Softmax operations in self-attention and loss computation in a language model transformer. DPM implements a learnable multi-term polynomial, $a \cdot r^2 + b \cdot r^z$ (where $r$ represents the pre-activation scores). By optimizing the coefficients $a$, $b$, and $z$ during training, DPM enables layer-specific learned activation curves. Evaluating a 25M-parameter DPM transformer on WikiText-103 demonstrates a substantial reduction in validation loss, achieving a 10-run average perplexity of 15.61 compared to a 35.78 ReLU-squared baseline. Correlation studies confirm this improved validation loss efficiently maps to accelerated next-token prediction accuracy. We address initial routing vulnerabilities observed during lexical perturbation by introducing a 1.5% token swap ablation, which restores robust routing stability. DPM's scalability and zero-shot capabilities are further validated by a single-epoch WebText corpus training run, achieving 70.5% overall syntactic accuracy across 67,000 BLiMP evaluation pairs.
 
@@ -15,7 +15,7 @@ This repository contains the model architecture, training configurations, and ze
 You can reproduce our Wikitext-103 zero-shot perplexity and exact-match accuracy without needing local GPU hardware. 
 
 We have provided a standalone **Google Colab notebook** (`DPM_Wikitext_ZeroShot_Eval.ipynb`) that automatically:
-1. Downloads the pre-trained weights from Hugging Face (`TheToyChest/DPM-15L`).
+1. Downloads the pre-trained weights from Hugging Face (`TheToyChest/DPM-15L`). The model was trained for 1 Epoch on the 9 billion token OpenWebText Corpus.
 2. Tokenizes the Wikitext-103 validation split.
 3. Evaluates the strict rank-order Exact-Match Accuracy and NLL Perplexity.
 
@@ -45,8 +45,13 @@ To provide an objective comparison, **Next-Token Accuracy** and **Wikitext-103 Z
 
 ## 📂 Repository Contents
 
-* `DPM_Wikitext_ZeroShot_Eval.ipynb`: This is an automated Google Colab script for reproducing zero-shot evaluations.
-* Additional material to come  
+- `DPM_Wikitext_ZeroShot_Eval.ipynb`: Automated Google Colab notebook for reproducing zero-shot evaluations.
+- [`wikitext103_ablation/`](./wikitext103_ablation/): Complete PyTorch training scripts (`prepare_data.py`, `train.py`, `train_baseline.py`) and instructions to reproduce the 24.7M-parameter WikiText-103 weight-decay ablation and baseline comparisons.
+
+## 📜 License
+
+**Commercial and Non-Commercial Research & Development License**  
+Copyright (c), 2026, Anthony Luke Simon. All rights reserved.
 
 * #LICENSE
 Commercial and Non-Commercial Research & Development License
