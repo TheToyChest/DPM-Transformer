@@ -1,53 +1,39 @@
 # 🧸 DPM-Transformer: Look Mom, No Softmax!
-[![Model Weights](https://img.shields.io/badge/HuggingFace-Weights-orange)](https://huggingface.co/TheToyChest/DPM-15L) 
-[![Colab](https://img.shields.io/badge/Colab-Zero--Shot_Eval-blue)](DPM_Wikitext_ZeroShot_Eval.ipynb)
 
-**A 25M parameter causal language model utilizing Decoupled Polynomial Mapping (DPM) and true mathematical sparsity.** 
+**A 25M parameter causal language model utilizing Decoupled Polynomial Mapping (DPM) and true mathematical sparsity.**
 
-This repository contains the model architecture, training configurations, and zero-shot evaluation scripts for a 15-layer DPM language model transformer. This architecture removes standard exponential Softmax in both self-attention and loss computation, replacing it with DPM: a ReLU activation paired with a learned multi-term polynomial expansion.
+This repository contains the model architecture and training scripts for a 15-layer DPM language model transformer. This architecture removes standard exponential Softmax in both self-attention and loss computation, replacing it with DPM: a ReLU activation paired with a learned multi-term polynomial expansion.
 
-> **Abstract:** Decoupled Polynomial Mapping (DPM) architecture replaces standard exponential Softmax operations in self-attention and loss computation in a language model transformer. DPM implements a learnable multi-term polynomial, $a \cdot r^2 + b \cdot r^z$ (where $r$ represents the pre-activation scores). By optimizing the coefficients $a$, $b$, and $z$ during training, DPM enables layer-specific learned activation curves. Evaluating a 25M-parameter DPM transformer on WikiText-103 demonstrates a substantial reduction in validation loss, achieving a 10-run average perplexity of 15.61 compared to a 35.78 ReLU-squared baseline. Correlation studies confirm this improved validation loss efficiently maps to accelerated next-token prediction accuracy. We address initial routing vulnerabilities observed during lexical perturbation by introducing a 1.5% token swap ablation, which restores robust routing stability. DPM's scalability and zero-shot capabilities are further validated by a single-epoch WebText corpus training run, achieving 70.5% overall syntactic accuracy across 67,000 BLiMP evaluation pairs.
+> **Abstract:** Decoupled Polynomial Mapping (DPM) replaces standard exponential Softmax operations in self-attention and loss computation in a language model transformer. DPM implements a learnable multi-term polynomial, $a \cdot r^2 + b \cdot r^z$ (where $r$ represents the rectified attention scores). By optimizing the coefficients $a$, $b$, and $z$ during training, DPM enables layer-specific learned activation curves. *(Note: Benchmarks and pre-trained weights for the 25M-parameter DPM transformer are currently being re-evaluated following a causal masking fix.)*
 
 ---
 
-## 🚀 Quick Start: Zero-Shot Evaluation
-
-You can reproduce our Wikitext-103 zero-shot perplexity and exact-match accuracy without needing local GPU hardware. 
-
-We have provided a standalone **Google Colab notebook** (`DPM_Wikitext_ZeroShot_Eval.ipynb`) that automatically:
-1. Downloads the pre-trained weights from Hugging Face (`TheToyChest/DPM-15L`). The model was trained for 1 Epoch on the 9 billion token OpenWebText Corpus.
-2. Tokenizes the Wikitext-103 validation split.
-3. Evaluates the strict rank-order Exact-Match Accuracy and NLL Perplexity.
-
-**Model Weights:** Hosted on Hugging Face at [TheToyChest/DPM-15L](https://huggingface.co/TheToyChest/DPM-15L).
-
 ## 📊 Empirical Proof: The Pareto Frontier
-To provide an objective comparison, **Next-Token Accuracy** and **Wikitext-103 Zero-Shot Generalization** results are used as objective benchmarks to compare model performance.
+To provide an objective comparison, **Next-Token Accuracy** and **WikiText-103 Zero-Shot Generalization** are used as benchmarks to compare model performance.
 
 | Model Config | Seed | Batch Size | OWT Val Loss | OWT Next-Token Acc | Wiki-103 Perplexity | Wiki-103 Zero-Shot Acc | HellaSwag |
-| :---         | :---: | :---:     | :---:         | :---:             | :---:               | :---:                   | :---: |
-| **Softmax Baseline** | 105 | 16 | 4.04       | 30.88%             | 179.38               | 23.47%                 | 25.52% |
-| **DPM** | 42 | 32         | 3.17         | 40.01%             | 81.28               | 28.30%                 | 25.12% |
-| **DPM** | 105 | 16         | 2.81         | 43.76%             | 59.81               | 33.66%                 | 25.19% |
-| **DPM** | 42 | 16         | 2.71         | 44.81%             | 44.67               | 34.17%                 | 25.67% |
-| **DPM** | 999 | 16     | 2.69      | 44.26%       | 44.05             | 33.15%           | 25.85% |
+| :--- | :---: | :---: | :---: | :---: | :---: | :---: | :---: |
+| **Softmax Baseline** | 105 | 16 | 4.04 | 30.88% | 179.38 | 23.47% | 25.52% |
+| **DPM** | *TBD* | 16 | *In progress* | *In progress* | *In progress* | *In progress* | *In progress* |
+
+---
 
 ## 🏗️ Architecture Specifications
 
-* **Topology:** 15 Layers, 4 Attention Heads
-* **Dimensionality:** 256 Embedding Dim, 1024 FFN Dim
-* **Context Window:** 512 Tokens
-* **Positional Embeddings:** RoPE (Rotary Position Embedding)
-* **Normalization:** RMSNorm (Post-Norm Configuration + Q/K Normalization)
-* **Attention Activation:** ReLU and learned polynomial expansion (DPM)
-* **Parameter Count:** 25 Million
-* **Training Data:** 1 Epoch on OpenWebText
+- **Topology:** 15 Layers, 4 Attention Heads
+- **Dimensionality:** 256 Embedding Dim, 1024 FFN Dim
+- **Context Window:** 512 Tokens
+- **Positional Embeddings:** RoPE (Rotary Position Embedding)
+- **Normalization:** RMSNorm (Post-Norm Configuration + Q/K Normalization)
+- **Attention Activation:** ReLU and learned polynomial expansion (DPM)
+- **Parameter Count:** 25 Million
+- **Training Data:** 1 Epoch on OpenWebText
+
+---
 
 ## 📂 Repository Contents
 
-- `DPM_Wikitext_ZeroShot_Eval.ipynb`: Automated Google Colab notebook for reproducing zero-shot evaluations.
 - [`wikitext103_ablation/`](./wikitext103_ablation/): Complete PyTorch training scripts (`prepare_data.py`, `train.py`, `train_baseline.py`) and instructions to reproduce the 24.7M-parameter WikiText-103 weight-decay ablation and baseline comparisons.
-
 ## 📜 License
 
 **Commercial and Non-Commercial Research & Development License**  
