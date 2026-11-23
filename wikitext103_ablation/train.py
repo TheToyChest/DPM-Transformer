@@ -260,6 +260,9 @@ class UniversalAttention(nn.Module):
             b = F.softplus(self.poly_b)
             z_exp = 2.0 + F.softplus(self.poly_z_exp)
             attn_raw = (a * (r_safe ** 2.0)) + (b * (r_safe ** z_exp))
+
+            attn_raw = attn_raw.masked_fill(causal_mask == 0, 0.0)
+            
             attn_sum = attn_raw.sum(dim=-1, keepdim=True).clamp(min=1e-6)
             attn = attn_raw / attn_sum
             attn_out = torch.matmul(attn, V)
